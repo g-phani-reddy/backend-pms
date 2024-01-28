@@ -4,15 +4,12 @@ from services import owner_services
 owner_ns = Namespace('owner', description='Owner related operations')
 
 owner_model = owner_ns.model('Owner', {
-    'owner_id': fields.String(required=True, description='The owner identifier'),
     'name': fields.String(required=True, description='The owner name'),
     'email': fields.String(required=True, description='Owner email'),
-    'contact_no.': fields.String(required=True, description='Contact No.'),
+    'contact_no': fields.String(required=True, description='Contact No.'),
     'password': fields.String(required=True, description='password')
 })
 
-
-print("----here------")
 
 class Owner(Resource):
 
@@ -40,17 +37,17 @@ class Owner(Resource):
             
 
             #create owner
-            status, owner_id = owner_services.create_owner(name, email, contact_num, password)
+            status, message = owner_services.create_owner(name, email, contact_num, password)
 
             if status:
                 return {
-                    "owner_id": str(owner_id),
+                    "owner_id": str(message),
                     "message": "successfully created owner"
                     }, 201
             
             else:
                 return {
-                    "message": "unable to create owner.Please contact support"
+                    "message": str(message)
                 }, 400
         
         except Exception as e:
@@ -60,4 +57,4 @@ class Owner(Resource):
             }, 500
 
 
-owner_ns.add_resource(Owner, "owner")
+owner_ns.add_resource(Owner, "owner/signup")
